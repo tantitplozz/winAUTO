@@ -1,0 +1,86 @@
+version: '3.8'
+
+services:
+  ecommerce-testing:
+    build: .
+    container_name: ecommerce-testing
+    volumes:
+      - ./config:/app/config
+      - ./reports:/app/reports
+      - ./tests:/app/tests
+    environment:
+      - DISPLAY=:99
+      - PYTHONPATH=/app
+    networks:
+      - testing-network
+    command: tail -f /dev/null  # Keep container running for interactive use
+    
+  # Optional: Add a VNC server for debugging browser tests
+  vnc-server:
+    image: dorowu/ubuntu-desktop-lxde-vnc:latest
+    container_name: vnc-server
+    ports:
+      - "6080:80"
+    environment:
+      - VNC_PASSWORD=testing123
+    networks:
+      - testing-network
+    profiles:
+      - debug
+
+  # Optional: Add Selenium Grid for distributed testing
+  selenium-hub:
+    image: selenium/hub:latest
+    container_name: selenium-hub
+    ports:
+      - "4444:4444"
+    environment:
+      - GRID_MAX_SESSION=16
+      - GRID_BROWSER_TIMEOUT=300
+      - GRID_TIMEOUT=300
+    networks:
+      - testing-network
+    profiles:
+      - grid
+
+  selenium-chrome:
+    image: selenium/node-chrome:latest
+    container_name: selenium-chrome
+    depends_on:
+      - selenium-hub
+    environment:
+      - HUB_HOST=selenium-hub
+      - HUB_PORT=4444
+      - NODE_MAX_INSTANCES=4
+      - NODE_MAX_SESSION=4
+    volumes:
+      - /dev/shm:/dev/shm
+    networks:
+      - testing-network
+    profiles:
+      - grid
+
+  selenium-firefox:
+    image: selenium/node-firefox:latest
+    container_name: selenium-firefox
+    depends_on:
+      - selenium-hub
+    environment:
+      - HUB_HOST=selenium-hub
+      - HUB_PORT=4444
+      - NODE_MAX_INSTANCES=4
+      - NODE_MAX_SESSION=4
+    volumes:
+      - /dev/shm:/dev/shm
+    networks:
+      - testing-network
+    profiles:
+      - grid
+
+networks:
+  testing-network:
+    driver: bridge
+
+volumes:
+  test-reports:
+  test-config:

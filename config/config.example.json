@@ -1,0 +1,80 @@
+{
+  "testing": {
+    "target_sites": [
+      {
+        "name": "your-test-site",
+        "base_url": "https://your-test-site.com",
+        "checkout_url": "https://your-test-site.com/checkout",
+        "product_urls": [
+          "https://your-test-site.com/product/test-item-1",
+          "https://your-test-site.com/product/test-item-2"
+        ]
+      }
+    ],
+    "browsers": ["chromium", "firefox", "webkit"],
+    "headless": true,
+    "timeout": 30000,
+    "retry_attempts": 3,
+    "screenshot_on_failure": true
+  },
+  "test_data": {
+    "valid_test_cards": [
+      {
+        "number": "4242424242424242",
+        "expiry": "12/25",
+        "cvv": "123",
+        "name": "Test User",
+        "type": "visa"
+      },
+      {
+        "number": "5555555555554444",
+        "expiry": "12/25", 
+        "cvv": "123",
+        "name": "Test User",
+        "type": "mastercard"
+      }
+    ],
+    "test_addresses": [
+      {
+        "first_name": "John",
+        "last_name": "Doe",
+        "email": "test@example.com",
+        "phone": "+1234567890",
+        "address": "123 Test Street",
+        "city": "Test City",
+        "state": "Test State",
+        "zip": "12345",
+        "country": "US"
+      }
+    ]
+  },
+  "llm": {
+    "use_dolphin": true,
+    "api_url": "http://173.208.162.7:11434",
+    "model": "hf.co/mradermacher/Dolphin-Mistral-24B-Venice-Edition-i1-GGUF:Q4_K_M",
+    "api_key": "DOLPHIN24B_GOD_KEY_2025",
+    "timeout": 60
+  },
+  "notifications": {
+    "telegram": {
+      "enabled": true,
+      "bot_token": "YOUR_BOT_TOKEN",
+      "chat_id": "YOUR_CHAT_ID"
+    },
+    "email": {
+      "enabled": false,
+      "smtp_server": "smtp.gmail.com",
+      "smtp_port": 587,
+      "username": "your-email@gmail.com",
+      "password": "your-app-password",
+      "to_email": "reports@your-company.com"
+    }
+  },
+  "reporting": {
+    "output_dir": "reports",
+    "generate_html": true,
+    "generate_json": true,
+    "include_screenshots": true,
+    "performance_metrics": true
+  }
+}
