@@ -1,4 +1,4 @@
-# E-commerce Testing Automation Stack
+# winAUTO - E-commerce Testing Automation Stack
 
 ## Overview
 Production-ready multi-agent testing framework for e-commerce checkout flows using OpenHands + Dolphin-24B-Venice LLM integration.
